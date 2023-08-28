@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.github.panxiaochao</groupId>
+    <artifactId>pxc-framework-spring3-parent</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>pxc-framework spring3 Converged Project, base on spring boot 3.X up-to-date</description>
+
+    <url>https://github.com/panxiaochao/pxc-framework-spring3</url>
+
+    <!-- licenses -->
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <!-- developers -->
+    <developers>
+        <developer>
+            <name>Lypxc</name>
+            <email>545685602@qq.com</email>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <!-- scm -->
+    <scm>
+        <tag>main</tag>
+        <url>https://github.com/panxiaochao/pxc-framework-spring3.git</url>
+        <connection>scm:git:https://github.com/panxiaochao/pxc-framework-spring3.git
+        </connection>
+        <developerConnection>scm:git:https://github.com/panxiaochao/pxc-framework-spring3.git
+        </developerConnection>
+    </scm>
+
+    <!-- distributionManagement -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <!-- modules -->
+    <modules>
+        <module>pxc-framework-spring3-bom</module>
+        <module>pxc-framework-spring3-util</module>
+        <module>pxc-framework-spring3-core</module>
+        <module>pxc-framework-spring3-jackson</module>
+        <module>pxc-framework-spring3-web</module>
+        <module>pxc-framework-spring3-operate-log</module>
+        <module>pxc-framework-spring3-redis</module>
+        <module>pxc-framework-spring3-repeatsubmit</module>
+        <module>pxc-framework-spring3-ratelimiter</module>
+        <module>pxc-framework-spring3-mybatis-plus</module>
+        <module>pxc-framework-spring3-trace-log</module>
+    </modules>
+
+    <!-- properties -->
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- 2022.0.x 版本支持 3.0.x, 3.1.x (Starting with 2022.0.3) -->
+        <spring-boot.version>3.1.3</spring-boot.version>
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <springdoc-openapi.version>1.7.0</springdoc-openapi.version>
+        <mybatis-plus.version>3.5.3.2</mybatis-plus.version>
+        <lombok.version>1.18.28</lombok.version>
+        <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
+        <oshi.version>6.4.4</oshi.version>
+        <ip2region.version>2.7.0</ip2region.version>
+        <commons-io.version>2.13.0</commons-io.version>
+
+        <!-- 插件版本 -->
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-compiler-plugin.verison>3.11.0</maven-compiler-plugin.verison>
+        <maven-source-plugin.verison>3.3.0</maven-source-plugin.verison>
+        <maven-javadoc-plugin.verison>3.5.0</maven-javadoc-plugin.verison>
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+        <spring-javaformat-maven-plugin.version>0.0.39</spring-javaformat-maven-plugin.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot 依赖管理 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud 依赖管理 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- pxc framework 依赖管理 -->
+            <dependency>
+                <groupId>io.github.panxiaochao</groupId>
+                <artifactId>pxc-framework-spring3-bom</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- SpringDoc 依赖管理 -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi</artifactId>
+                <version>${springdoc-openapi.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- mybatis-plus 依赖管理 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- alibaba ttl 管理 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
+            </dependency>
+
+            <!-- 系统信息 依赖管理 -->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi.version}</version>
+            </dependency>
+
+            <!-- ip2region 依赖管理 -->
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 全局依赖  -->
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <!-- build -->
+    <build>
+        <plugins>
+            <!-- 编译环境 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.verison}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <skip>true</skip>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                            <version>${spring-boot.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <!-- 生成sources源码包的插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.verison}</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 生成javadoc文档包的插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.verison}</version>
+                <configuration>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                    <!-- TODO 临时解决不规范的javadoc生成报错,后面要规范化后把这行去掉 -->
+                    <additionalJOption>-Xdoclint:none</additionalJOption>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 生成jar包信息 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <build-time>${maven.build.timestamp}</build-time>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- 统一版本号管理 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 头部加入license文件信息 -->
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.2</version>
+                <configuration>
+                    <properties>
+                        <year>2023-2024</year>
+                        <owner>Lypxc</owner>
+                        <email>545685602@qq.com</email>
+                    </properties>
+                    <licenseSets>
+                        <licenseSet>
+                            <!--HEADER文件-->
+                            <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+                            <!--排除文件-->
+                            <excludes>
+                                <exclude>**/README</exclude>
+                                <exclude>src/test/java/**</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                                <exclude>**/*.md</exclude>
+                                <exclude>**/*.xml</exclude>
+                                <exclude>.gitignore</exclude>
+                                <exclude>.springjavaformatconfig</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
+                </configuration>
+            </plugin>
+
+            <!-- CheckStyle plugin -->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
+            <!--                <version>${maven-checkstyle-plugin.version}</version>-->
+            <!--                <dependencies>-->
+            <!--                    <dependency>-->
+            <!--                        <groupId>com.puppycrawl.tools</groupId>-->
+            <!--                        <artifactId>checkstyle</artifactId>-->
+            <!--                        <version>9.2</version>-->
+            <!--                    </dependency>-->
+            <!--                </dependencies>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>validate</id>-->
+            <!--                        <phase>validate</phase>-->
+            <!--                        <inherited>true</inherited>-->
+            <!--                        <configuration>-->
+            <!--                            <configLocation>script/checkstyle/pxc_checkstyle.xml</configLocation>-->
+            <!--                            <suppressionsLocation>script/checkstyle/checkstyle-suppressions.xml-->
+            <!--                            </suppressionsLocation>-->
+            <!--                            <encoding>UTF-8</encoding>-->
+            <!--                            <consoleOutput>true</consoleOutput>-->
+            <!--                            <failsOnError>true</failsOnError>-->
+            <!--                            <violationSeverity>warning</violationSeverity>-->
+            <!--                            <includeTestSourceDirectory>false</includeTestSourceDirectory>-->
+            <!--                        </configuration>-->
+            <!--                        <goals>-->
+            <!--                            <goal>check</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+
+            <!-- https://mvnrepository.com/artifact/io.spring.javaformat/spring-javaformat-maven-plugin -->
+            <!-- https://github.com/spring-io/spring-javaformat -->
+            <!--
+                    生效条件:
+                      1.springjavaformatconfig file exists
+                      2.For a Maven-based project, spring-javaformat-maven-plugin plugin is defined in pom.xml
+             -->
+            <!--            <plugin>-->
+            <!--                <groupId>io.spring.javaformat</groupId>-->
+            <!--                <artifactId>spring-javaformat-maven-plugin</artifactId>-->
+            <!--                <version>${spring-javaformat-maven-plugin.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>validate</phase>-->
+            <!--                        <inherited>true</inherited>-->
+            <!--                        <goals>-->
+            <!--                            <goal>validate</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- GPG 打包插件 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

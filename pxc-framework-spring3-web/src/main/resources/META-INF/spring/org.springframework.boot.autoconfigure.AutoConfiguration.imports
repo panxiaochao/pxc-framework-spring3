@@ -1,0 +1,4 @@
+io.github.panxiaochao.spring3.web.config.FilterAutoConfiguration
+io.github.panxiaochao.spring3.web.config.WebMvcAutoConfiguration
+io.github.panxiaochao.spring3.web.handler.RestExceptionHandler
+io.github.panxiaochao.spring3.web.handler.RestResponseEntityExceptionHandler

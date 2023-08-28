@@ -1,0 +1,3 @@
+io.github.panxiaochao.spring3.core.config.ThreadPoolAutoConfiguration
+io.github.panxiaochao.spring3.core.config.AsyncExecutorAutoConfiguration
+io.github.panxiaochao.spring3.core.config.FrameworkContextAutoConfiguration
