@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * <p>
- * 默认情况下，标准的 Spring MVC 异常会通过 DefaultHandlerExceptionResolver 来处理 继承自定义处理一些特殊错误
+ * 默认情况下，标准的 Spring MVC 异常会通过 DefaultHandlerExceptionResolver 来处理 继承自定义处理一些特殊错误.
  * </p>
  *
  * @author Lypxc

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * <p>
- * 随机数工具.
+ * 随机数工具
  * </p>
  *
  * @author Lypxc
@@ -32,7 +32,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RandomUtil {
 
 	private RandomUtil() {
-		throw new RuntimeException("can't be construct");
 	}
 
 	private static final RandomUtil INST = new RandomUtil();
@@ -99,6 +98,29 @@ public class RandomUtil {
 		}
 		return Arrays.asList(randoms);
 	}
+
+    /**
+     * 获取数组随机数数组
+     *
+     * @param len 随机长度
+     * @return byte[]
+     */
+    public byte[] getBytesRandom(int len) {
+        byte[] bytes = new byte[len];
+        random.nextBytes(bytes);
+        return bytes;
+    }
+
+    /**
+     * <p>
+     * Returns a random boolean value
+     * </p>
+     *
+     * @return the random boolean
+     */
+    public boolean nextBoolean() {
+        return random.nextBoolean();
+    }
 
 	/**
 	 * Returns a random long within the specified range.

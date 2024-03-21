@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package io.github.panxiaochao.spring3.trace.log.config;
 
+import io.github.panxiaochao.spring3.trace.log.core.interceptor.feign.TraceFeignInterceptor;
 import io.github.panxiaochao.spring3.trace.log.core.interceptor.mvc.TraceWebMvcInterceptor;
 import io.github.panxiaochao.spring3.trace.log.core.interceptor.scg.TraceGatewayGlobalFilter;
 import org.slf4j.Logger;
@@ -80,5 +81,21 @@ public class TraceLogAutoConfiguration {
 		}
 
 	}
+
+    /**
+     * Feign Trace Log
+     */
+    @Configuration
+    @ConditionalOnClass(name = {"feign.RequestInterceptor"})
+    static class TraceLogFeignConfiguration {
+
+        @Bean
+        @Order(Ordered.HIGHEST_PRECEDENCE)
+        public TraceFeignInterceptor traceFeignInterceptor() {
+            LOGGER.info("配置[TraceLog-Feign]成功！");
+            return new TraceFeignInterceptor();
+        }
+
+    }
 
 }

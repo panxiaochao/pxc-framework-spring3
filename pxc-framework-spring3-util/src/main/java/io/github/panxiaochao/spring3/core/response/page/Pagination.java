@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,16 +35,6 @@ public class Pagination {
 	/**
 	 * 页码.
 	 */
-	private static final long PAGE_NO = 1;
-
-	/**
-	 * 页数.
-	 */
-	private static final long PAGE_SIZE = 10;
-
-	/**
-	 * 页码.
-	 */
 	@Schema(description = "页码，不小于1")
 	private long pageNo;
 
@@ -70,8 +60,8 @@ public class Pagination {
 	 * Construct.
 	 */
 	public Pagination() {
-		this.pageNo = PAGE_NO;
-		this.pageSize = PAGE_SIZE;
+        this.pageNo = 1;
+        this.pageSize = 10;
 		this.total = 0;
 		this.totalPages = getTotalPages(0, pageSize);
 	}
@@ -119,16 +109,16 @@ public class Pagination {
 
 	/**
 	 * 获取总页数.
-	 * @param totalCount 总条数
+     * @param total 总条数
 	 * @param pageSize 分页
 	 * @return ResponsePageBuilder
 	 */
-	private long getTotalPages(final long totalCount, final long pageSize) {
-		if (totalCount == 0) {
+    private long getTotalPages(final long total, final long pageSize) {
+        if (total == 0) {
 			return 0L;
 		}
-		long pages = totalCount / pageSize;
-		if (totalCount % pageSize != 0) {
+        long pages = total / pageSize;
+        if (total % pageSize != 0) {
 			pages++;
 		}
 		return pages;

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 package io.github.panxiaochao.spring3.core.utils.sysinfo;
 
 import io.github.panxiaochao.spring3.core.utils.ArithmeticUtil;
+import io.github.panxiaochao.spring3.core.utils.unit.DataOfSize;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * <p>
@@ -27,37 +29,39 @@ import lombok.Setter;
  * @since 2023-07-07
  */
 @Setter
+@ToString
 public class Mem {
 
 	/**
-	 * 内存总量
+     * 内存总量, 单位MB
 	 */
-	private double total;
+    private long total;
 
 	/**
-	 * 已用内存
+     * 已用内存, 单位MB
 	 */
-	private double used;
+    private long used;
 
 	/**
-	 * 剩余内存
+     * 剩余内存, 单位MB
 	 */
-	private double free;
+    private long free;
 
-	public double getTotal() {
-		return ArithmeticUtil.div(total, (1024 * 1024 * 1024), 2);
+    public long getTotal() {
+        return DataOfSize.ofBytes(total).toMegabytes();
 	}
 
-	public double getUsed() {
-		return ArithmeticUtil.div(used, (1024 * 1024 * 1024), 2);
+    public long getUsed() {
+        return DataOfSize.ofBytes(used).toMegabytes();
 	}
 
-	public double getFree() {
-		return ArithmeticUtil.div(free, (1024 * 1024 * 1024), 2);
+    public long getFree() {
+        return DataOfSize.ofBytes(free).toMegabytes();
 	}
 
 	public double getUsage() {
-		return ArithmeticUtil.mul(ArithmeticUtil.div(used, total, 4), 100);
+        return ArithmeticUtil.mul(ArithmeticUtil.div(String.valueOf(used), String.valueOf(total), 4), "100")
+                .doubleValue();
 	}
 
 }

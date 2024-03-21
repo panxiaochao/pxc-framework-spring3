@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.Set;
 
 /**
  * <p>
- * 资源工具类.
+ * 资源工具类
  * </p>
  *
  * @author Lypxc
@@ -35,15 +36,28 @@ public class ResourceUtil {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceUtil.class);
 
-	public static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+    /**
+     * The default buffer size used when copying bytes.
+     */
+    public static final int DEFAULT_BUFFER_SIZE = 4096;
+
+    private static final byte[] EMPTY_CONTENT = new byte[0];
 
 	public static String read(InputStream in) {
 		if (in == null) {
 			return null;
-		}
-		InputStreamReader reader;
-		reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+        }
+        InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
 		return read(reader);
+    }
+
+    public static byte[] readByteArray(InputStream in) throws IOException {
+        if (in == null) {
+            return EMPTY_CONTENT;
+        }
+        ByteArrayOutputStream output = new ByteArrayOutputStream(DEFAULT_BUFFER_SIZE);
+        copy(in, output);
+        return output.toByteArray();
 	}
 
 	public static String readFromResource(String resource) throws IOException {
@@ -86,45 +100,87 @@ public class ResourceUtil {
 		}
 		finally {
 			close(in);
-		}
-	}
+        }
+    }
 
-	public static byte[] readByteArray(InputStream input) throws IOException {
-		if (input == null) {
-			return null;
-		}
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		copy(input, output);
-		byte[] bytes = output.toByteArray();
-		output.close();
-		return bytes;
-	}
+    /**
+     * Copy the contents of the given byte array to the given OutputStream.
+     * <p>
+     * Leaves the stream open when done.
+     *
+     * @param in  the byte array to copy from
+     * @param out the OutputStream to copy to
+     */
+    public static void copy(byte[] in, OutputStream out) {
+        try {
+            out.write(in);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static long copy(InputStream input, OutputStream output) throws IOException {
-		final int EOF = -1;
-		byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-		long count = 0;
-		int n = 0;
-		while (EOF != (n = input.read(buffer))) {
-			output.write(buffer, 0, n);
-			count += n;
-		}
-		return count;
-	}
+    /**
+     * Copy the contents of the given String to the given OutputStream.
+     * <p>
+     * Leaves the stream open when done.
+     *
+     * @param in      the String to copy from
+     * @param charset the Charset
+     * @param out     the OutputStream to copy to
+     */
+    public static void copy(String in, Charset charset, OutputStream out) {
+        try {
+            Writer writer = new OutputStreamWriter(out, charset);
+            writer.write(in);
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static String read(Reader reader) {
-		if (reader == null) {
+    /**
+     * Copy the contents of the given InputStream to the given OutputStream.
+     * <p>
+     * Leaves both streams open when done.
+     *
+     * @param in  the InputStream to copy from
+     * @param out the OutputStream to copy to
+     * @return the number of bytes copied
+     * @throws IOException in case of I/O errors
+     */
+    public static long copy(InputStream in, OutputStream out) throws IOException {
+        int byteCount = 0;
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        int bytesRead;
+        while ((bytesRead = in.read(buffer)) != -1) {
+            out.write(buffer, 0, bytesRead);
+            byteCount += bytesRead;
+        }
+        out.flush();
+        return byteCount;
+    }
+
+    /**
+     * Copy the contents of the given InputStream into a String.
+     * <p>
+     * Leaves the stream open when done.
+     * @param reader the InputStreamReader
+	 * @return the String that has been copied to (possibly empty)
+     */
+    public static String read(Reader reader) {
+        if (reader == null) {
 			return null;
 		}
 
 		try {
-			StringWriter writer = new StringWriter();
-			char[] buffer = new char[DEFAULT_BUFFER_SIZE];
-			int n = 0;
-			while (-1 != (n = reader.read(buffer))) {
-				writer.write(buffer, 0, n);
+			StringBuilder out = new StringBuilder(DEFAULT_BUFFER_SIZE);
+            char[] buffer = new char[DEFAULT_BUFFER_SIZE];
+            int charsRead;
+            while ((charsRead = reader.read(buffer)) != -1) {
+				out.append(buffer, 0, charsRead);
 			}
-			return writer.toString();
+			return out.toString();
 		}
 		catch (IOException ex) {
 			throw new IllegalStateException("read error", ex);
@@ -150,9 +206,29 @@ public class ResourceUtil {
 				}
 			}
 			return new String(buffer, 0, length - rest);
+        } catch (IOException ex) {
+            throw new IllegalStateException("read error", ex);
+        }
+    }
+
+    /**
+     * Obtain content byteCount of the given InputStream.
+     *
+     * @param in the InputStream
+     * @return the number of bytes read
+     */
+    public static int byteCount(InputStream in) {
+        try {
+            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+            int bytesRead = -1;
+            int byteCount = 0;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                byteCount += bytesRead;
+			}
+			return byteCount;
 		}
-		catch (IOException ex) {
-			throw new IllegalStateException("read error", ex);
+		catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

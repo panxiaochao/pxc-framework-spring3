@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,11 @@ import com.alibaba.ttl.TransmittableThreadLocal;
 import io.github.panxiaochao.spring3.core.exception.ServerRuntimeException;
 import io.github.panxiaochao.spring3.core.ienums.IEnum;
 import io.github.panxiaochao.spring3.core.response.R;
-import io.github.panxiaochao.spring3.core.utils.*;
+import io.github.panxiaochao.spring3.core.utils.ArrayUtil;
+import io.github.panxiaochao.spring3.core.utils.JacksonUtil;
+import io.github.panxiaochao.spring3.core.utils.ObjectUtil;
+import io.github.panxiaochao.spring3.core.utils.RequestUtil;
+import io.github.panxiaochao.spring3.core.utils.StringPools;
 import io.github.panxiaochao.spring3.redis.utils.RedissonUtil;
 import io.github.panxiaochao.spring3.repeatsubmit.annotation.RepeatSubmitLimiter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -183,7 +187,7 @@ public class RepeatSubmitLimiterAspect {
 	private static boolean isFilterObject(final Object o) {
 		Class<?> clazz = o.getClass();
 		if (clazz.isArray()) {
-			return clazz.getComponentType().isAssignableFrom(MultipartFile.class);
+            return MultipartFile.class.isAssignableFrom(clazz.getComponentType());
 		}
 		else if (Collection.class.isAssignableFrom(clazz)) {
 			Collection<?> collection = (Collection<?>) o;

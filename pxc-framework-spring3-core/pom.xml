@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>pxc-framework-spring3-core</artifactId>
-    <description>pxc framework spring3 core 核心模块</description>
+    <description>[1.0.0-SNAPSHOT]pxc framework spring3 core 核心模块</description>
 
     <dependencies>
         <dependency>

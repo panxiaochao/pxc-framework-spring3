@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,11 @@
  */
 package io.github.panxiaochao.spring3.web.filter;
 
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -28,26 +32,16 @@ import java.nio.charset.StandardCharsets;
  * @author Lypxc
  * @since 2023-06-26
  */
-public class EncodingFilter implements Filter {
+public class EncodingFilter extends OncePerRequestFilter {
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-			throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 		// 编码
-		servletRequest.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-		servletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
 		// 放行
-		filterChain.doFilter(servletRequest, servletResponse);
-	}
-
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		Filter.super.init(filterConfig);
-	}
-
-	@Override
-	public void destroy() {
-		Filter.super.destroy();
+        filterChain.doFilter(request, response);
 	}
 
 }

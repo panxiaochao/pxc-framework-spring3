@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,6 +72,16 @@ public class OperateLogDomain implements Serializable {
 	 */
 	private String requestContentType;
 
+    /**
+     * 请求浏览器
+     */
+    private String browser;
+
+    /**
+     * 请求操作系统
+     */
+    private String os;
+
 	/**
 	 * 请求Ip
 	 */
@@ -107,8 +117,13 @@ public class OperateLogDomain implements Serializable {
 	 */
 	private Object responseData;
 
-	/**
-	 * 执行耗时
+    /**
+     * 自定义参数值
+     */
+    private Object value;
+
+    /**
+     * 执行耗时, 单位毫秒
 	 */
 	private long costTime;
 

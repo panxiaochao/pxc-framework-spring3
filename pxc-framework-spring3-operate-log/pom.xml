@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>pxc-framework-spring3-operate-log</artifactId>
-    <description>pxc framework spring3 operatelog 操作日志模块</description>
+    <description>[1.0.0-SNAPSHOT]pxc framework spring3 operatelog 操作日志模块</description>
 
     <dependencies>
         <!-- 核心模块 -->
@@ -27,6 +27,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-http</artifactId>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet</groupId>

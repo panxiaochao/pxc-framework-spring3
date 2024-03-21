@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package io.github.panxiaochao.spring3.core.utils.ipregion;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -27,7 +28,7 @@ import java.util.regex.Pattern;
 
 /**
  * <p>
- * IpInfo 地址实体类.
+ * IpInfo 地址实体类
  * </p>
  *
  * @author Lypxc
@@ -35,6 +36,7 @@ import java.util.regex.Pattern;
  */
 @Getter
 @Setter
+@ToString
 public class IpInfo {
 
 	private static final Pattern SPLIT_PATTERN = Pattern.compile("\\|");
@@ -159,7 +161,7 @@ public class IpInfo {
 	 * @return info
 	 */
 	public static String readInfo(IpInfo ipInfo, Function<IpInfo, String> function) {
-		if (ipInfo == null) {
+        if (null == ipInfo) {
 			return null;
 		}
 		return function.apply(ipInfo);

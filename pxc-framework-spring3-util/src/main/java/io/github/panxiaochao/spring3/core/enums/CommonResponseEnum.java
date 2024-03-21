@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,37 +38,37 @@ public enum CommonResponseEnum implements IResponseEnum<Integer> {
 	/**
 	 * 成功, 兼容 {code: 0} 的情况
 	 */
-	OK_0(0, "成功！"),
+    OK_0(0, "成功"),
 
 	/**
 	 * 成功
 	 */
-	OK(200, "成功！"),
+    OK(200, "成功"),
 
 	/**
 	 * 错误请求
 	 */
-	BAD_REQUEST(400, "错误请求！"),
+    BAD_REQUEST(400, "错误请求"),
 
 	/**
 	 * 未授权
 	 */
-	UNAUTHORIZED(401, "未授权！"),
+    UNAUTHORIZED(401, "未授权"),
 
 	/**
 	 * 资源不存在
 	 */
-	NOT_FOUND(404, "资源不存在！"),
+    NOT_FOUND(404, "资源不存在"),
 
 	/**
 	 * 请求方式错误
 	 */
-	METHOD_NOT_ALLOWED(405, "请求方式错误！"),
+    METHOD_NOT_ALLOWED(405, "请求方式错误"),
 
 	/**
 	 * 服务器忙，请稍候重试
 	 */
-	INTERNAL_SERVER_ERROR(500, "服务器异常，请联系管理员！");
+    INTERNAL_SERVER_ERROR(500, "服务器异常，请联系管理员");
 
 	private final Integer code;
 

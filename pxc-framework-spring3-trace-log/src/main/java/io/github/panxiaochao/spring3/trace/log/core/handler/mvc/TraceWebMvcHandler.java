@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import io.github.panxiaochao.spring3.trace.log.core.domain.TraceLogDomain;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.MDC;
 
+
 /**
  * <p>
  * WebMvc处理类
@@ -32,14 +33,15 @@ import org.slf4j.MDC;
 public class TraceWebMvcHandler {
 
 	/**
-	 * volatile是为了保证内存可见性，防止编译器过度优化（指令重排序）
-	 */
+     * volatile是为了保证内存可见性，防止编译器过度优化（指令重排序）
+     */
 	private static volatile TraceWebMvcHandler traceWebMvcHandler = null;
 
 	/**
-	 * 饿汉模式，多线程安全
-	 * @return 初始化实例
-	 */
+     * 饿汉模式，多线程安全
+     *
+     * @return 初始化实例
+     */
 	public static TraceWebMvcHandler instance() {
 		if (null == traceWebMvcHandler) {
 			synchronized (TraceWebMvcHandler.class) {
@@ -52,9 +54,10 @@ public class TraceWebMvcHandler {
 	}
 
 	/**
-	 * 处理前置追踪日志
-	 * @param request request
-	 */
+     * 处理前置追踪日志
+     *
+     * @param request request
+     */
 	public void processBeforeTraceLog(HttpServletRequest request) {
 		// 日志标签语句
 		// @formatter:off

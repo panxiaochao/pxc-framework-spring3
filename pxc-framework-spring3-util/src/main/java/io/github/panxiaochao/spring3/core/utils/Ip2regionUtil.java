@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,16 +47,16 @@ public class Ip2regionUtil {
 				IpInfo ipInfo = IpInfo.toIpInfo(Ip2RegionLoader.INSTANCE().getSearcher().search(ip));
 				ipInfo.setIp(ip);
 				return ipInfo;
-			}
-			else if (!ip.contains(":")) {
-				// 2.非 ipv6
-				LOGGER.error("invalid ipv6 address {}", ip);
+			} else if (ip.contains(":")) {
+                // 2.ipv6
+                // TODO 现在没有工具支撑，ipv6情况下返回 null
 				return null;
 			}
 			else {
-				// 不是ipv4的情况下返回 null
-				return null;
-			}
+                // 3.非 ipv6
+                LOGGER.error("invalid ip address {}", ip);
+            }
+            return null;
 		}
 		catch (Exception e) {
 			LOGGER.error("memorySearch ip {} is error", ip, e);

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,11 @@
  */
 package io.github.panxiaochao.spring3.web.filter;
 
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,7 +33,7 @@ import java.util.List;
  * @author Lypxc
  * @since 2023-06-26
  */
-public class CorsFilter implements Filter {
+public class CorsFilter extends OncePerRequestFilter {
 
 	/**
 	 * 当前跨域请求最大有效时长，同一个域名不会再进行检查，默认3600
@@ -45,10 +47,8 @@ public class CorsFilter implements Filter {
 			"PATCH");
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 		// 解决跨域的问题
 		cors(request, response);
 		// 放行
@@ -59,17 +59,8 @@ public class CorsFilter implements Filter {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.setHeader("Access-Control-Allow-Methods", String.join(",", ALLOWED_METHODS));
+        response.setHeader("Access-Control-Allow-Headers", "*");
 		response.setHeader("Access-Control-Max-Age", MAX_AGE);
-	}
-
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		Filter.super.init(filterConfig);
-	}
-
-	@Override
-	public void destroy() {
-		Filter.super.destroy();
 	}
 
 }

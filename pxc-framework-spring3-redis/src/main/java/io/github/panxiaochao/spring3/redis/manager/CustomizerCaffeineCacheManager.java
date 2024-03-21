@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 支持 cacheName 多参数，用#隔开.
  * </p>
  * <p>
- * 重写源码：org.springframework.cache.caffeine.CaffeineCacheManager
+ * 重写源码：{@link org.springframework.cache.caffeine.CaffeineCacheManager}
  * </p>
  * <pre>
  * key格式为: cacheNames#ttl
@@ -167,12 +167,7 @@ public class CustomizerCaffeineCacheManager implements CacheManager {
 			if (array.length > 1) {
 				long mills = DurationStyle.detectAndParse(array[1]).toMillis();
 				cache = this.cacheMap.computeIfAbsent(name,
-						str -> this.adaptCaffeineCache(str,
-								Caffeine.newBuilder()
-									.expireAfterWrite(Duration.ofMillis(mills))
-									.initialCapacity(100)
-									.maximumSize(200)
-									.build()));
+                        str -> this.adaptCaffeineCache(str, createNativeCaffeineCache(mills, 100, 500)));
 			}
 			else {
 				cache = this.cacheMap.computeIfAbsent(name, this::createCaffeineCache);
@@ -231,18 +226,37 @@ public class CustomizerCaffeineCacheManager implements CacheManager {
 	 * @see #createNativeCaffeineCache
 	 */
 	protected Cache createCaffeineCache(String name) {
-		return adaptCaffeineCache(name, createNativeCaffeineCache(name));
+        return adaptCaffeineCache(name, createNativeCaffeineCache());
 	}
 
 	/**
 	 * Build a common Caffeine Cache instance for the specified cache name, using the
-	 * common Caffeine configuration specified on this cache manager.
-	 * @param name the name of the cache
+     * common Caffeine configuration specified on this cache manager, default expire 1
+     * minute.
 	 * @return the native Caffeine Cache instance
 	 * @see #createCaffeineCache
 	 */
-	protected com.github.benmanes.caffeine.cache.Cache<Object, Object> createNativeCaffeineCache(String name) {
-		return this.cacheBuilder.build();
+    protected com.github.benmanes.caffeine.cache.Cache<Object, Object> createNativeCaffeineCache() {
+        return this.cacheBuilder
+                // 设置过期时间
+                .expireAfterWrite(Duration.ofSeconds(60))
+                // 初始化缓存空间大小
+                .initialCapacity(100)
+                // 最大的缓存条数
+                .maximumSize(500)
+                .build();
+    }
+
+    private com.github.benmanes.caffeine.cache.Cache<Object, Object> createNativeCaffeineCache(long milliseconds,
+                                                                                               int initialCapacity, long maximumSize) {
+        return Caffeine.newBuilder()
+                // 设置过期时间
+                .expireAfterWrite(Duration.ofMillis(milliseconds))
+                // 初始化缓存空间大小
+                .initialCapacity(initialCapacity)
+                // 最大的缓存条数
+                .maximumSize(maximumSize)
+                .build();
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,11 @@
  */
 package io.github.panxiaochao.spring3.operate.log.core.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * <p>
@@ -29,6 +33,11 @@ import java.lang.annotation.*;
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OperateLog {
+
+    /**
+     * 获取请求参数key, 支持 Spring EL 表达式, 例如 #id, #user.id
+     */
+    String key() default "";
 
 	/**
 	 * 模块名
@@ -82,6 +91,10 @@ public @interface OperateLog {
 		 * 删除
 		 */
 		DELETE,
+        /**
+         * 查询
+         */
+        QUERY,
 		/**
 		 * 授权
 		 */
@@ -93,11 +106,15 @@ public @interface OperateLog {
 		/**
 		 * 导入
 		 */
-		IMPORT,
-		/**
-		 * 强退
+        IMPORT,
+        /**
+         * 登录
+         */
+        LOGIN,
+        /**
+         * 登出
 		 */
-		FORCE,
+		LOGOUT,
 		/**
 		 * 生成代码
 		 */

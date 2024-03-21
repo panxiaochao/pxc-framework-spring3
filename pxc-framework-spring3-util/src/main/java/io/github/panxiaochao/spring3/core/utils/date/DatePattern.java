@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.util.Locale;
 
 /**
  * <p>
- * 日期格式化相关统一格式类.
+ * 日期格式化相关统一格式类
  * </p>
  *
  * @author Lypxc
@@ -29,13 +29,25 @@ import java.util.Locale;
  */
 public class DatePattern {
 
-	public static final long DAY_MILLI = 24 * 60 * 60 * 1000;
+    /**
+     * 24小时 毫秒数
+     */
+    public static final long DAY_MILLIS = 24 * 60 * 60 * 1000;
 
-	public static final long HOUR_MILLI = 60 * 60 * 1000;
+    /**
+     * 1小时 毫秒数
+     */
+    public static final long HOUR_MILLIS = 60 * 60 * 1000;
 
-	public static final long MINUTE_MILLI = 60 * 1000;
+    /**
+     * 1分钟 毫秒数
+     */
+    public static final long MINUTE_MILLIS = 60 * 1000;
 
-	public static final long SECOND_MILLI = 1000;
+    /**
+     * 1秒 毫秒数
+     */
+    public static final long SECOND_MILLIS = 1000;
 
 	public static final String NORMAL_YEAR_PATTERN = "yyyy";
 

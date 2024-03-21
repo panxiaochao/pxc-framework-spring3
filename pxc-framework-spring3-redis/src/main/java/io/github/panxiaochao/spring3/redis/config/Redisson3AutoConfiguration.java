@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,13 @@ import io.github.panxiaochao.spring3.core.utils.JacksonUtil;
 import io.github.panxiaochao.spring3.redis.mapper.KeyPrefixNameMapper;
 import io.github.panxiaochao.spring3.redis.properties.Redisson3Properties;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RedissonClient;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SentinelServersConfig;
 import org.redisson.config.SingleServerConfig;
+import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +110,17 @@ public class Redisson3AutoConfiguration {
 		};
 	}
 
+    /**
+     * RedissonConnectionFactory工厂
+     *
+     * @param redissonClient 实例
+     * @return RedissonConnectionFactory工厂
+     */
+    @Bean
+    public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redissonClient) {
+        return new RedissonConnectionFactory(redissonClient);
+    }
+
 	/**
 	 * Redis 序列化配置 采用 RedissonConnectionFactory 工厂
 	 * @return RedisTemplate
@@ -117,12 +130,13 @@ public class Redisson3AutoConfiguration {
 		RedisTemplate<String, T> template = new RedisTemplate<>();
 		template.setConnectionFactory(redisConnectionFactory);
 		// 使用Jackson2JsonRedisSerialize 替换默认序列化(默认采用的是JDK序列化)
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
+				Object.class);
 		ObjectMapper om = new ObjectMapper();
 		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 		om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL,
 				JsonTypeInfo.As.PROPERTY);
-		Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(om,
-				Object.class);
+        jackson2JsonRedisSerializer.setObjectMapper(om);
 		// 使用 StringRedisSerializer 来序列化和反序列化redis的key值
 		template.setKeySerializer(RedisSerializer.string());
 		template.setHashKeySerializer(RedisSerializer.string());

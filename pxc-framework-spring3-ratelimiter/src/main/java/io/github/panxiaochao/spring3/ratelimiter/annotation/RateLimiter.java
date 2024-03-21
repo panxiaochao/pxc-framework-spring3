@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,16 @@
  */
 package io.github.panxiaochao.spring3.ratelimiter.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
- * 防刷、限流注解, 应用于字段、类、方法
+ * 防刷、限流注解, 应用于方法
  * </p>
  * <pre>
  *  ElementType.TYPE：能修饰类、接口或枚举类型
@@ -49,19 +54,29 @@ public @interface RateLimiter {
 	String key() default "";
 
 	/**
-	 * 指定second时间内, API最大请求次数
+     * 指定时间内, API最大请求次数
 	 */
 	int maxCount() default 10;
 
 	/**
-	 * 限定时间范围, 单位秒
+     * 限定时间范围, 默认毫秒
 	 */
-	int limitSecond() default 60;
+    long limitTime() default 60 * 1000;
+
+    /**
+     * 时间单位格式, 默认毫秒
+     */
+    TimeUnit timeUnit() default TimeUnit.MILLISECONDS;
 
 	/**
 	 * 限流类型
 	 */
 	RateLimiterType rateLimiterType() default RateLimiterType.METHOD;
+
+    /**
+     * 自定义提示消息
+     */
+    String message() default "";
 
 	/**
 	 * 限流类型

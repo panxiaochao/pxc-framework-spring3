@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -234,7 +234,7 @@ public final class ArithmeticUtil {
 			throw new IllegalArgumentException("The scale must be a positive integer or zero");
 		}
 		BigDecimal b1 = new BigDecimal(v1);
-		BigDecimal b2 = new BigDecimal(v1);
+        BigDecimal b2 = new BigDecimal(v2);
 		return b1.divide(b2, scale, RoundingMode.HALF_UP).toString();
 	}
 

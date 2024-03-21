@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
  */
 package io.github.panxiaochao.spring3.web.filter;
 
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
@@ -30,41 +32,29 @@ import java.io.IOException;
  * @author Lypxc
  * @since 2023-06-26
  */
-public class RequestWrapperFilter implements Filter {
+public class RequestWrapperFilter extends OncePerRequestFilter {
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		String contentType = request.getContentType();
 		// 判断请求类型
 		if (!StringUtils.hasText(contentType)) {
 			filterChain.doFilter(request, response);
 		}
-		else if (StringUtils.hasText(contentType) || contentType.contains("multipart/form-data")) {
+        // fix: 请求类型是表单提交的放过
+        else if (StringUtils.hasText(contentType) && contentType.contains("multipart/form-data")) {
 			filterChain.doFilter(request, response);
 		}
 		else {
 			// 重新包装 Request Wrapper
-			request = new RequestWrapper(request);
-			if (null == request) {
-				filterChain.doFilter(servletRequest, response);
-			}
-			else {
+            HttpServletRequest requestWrapper = new RequestWrapper(request);
+            if (null == requestWrapper) {
 				filterChain.doFilter(request, response);
-			}
-		}
-	}
-
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		Filter.super.init(filterConfig);
-	}
-
-	@Override
-	public void destroy() {
-		Filter.super.destroy();
+			} else {
+                filterChain.doFilter(requestWrapper, response);
+            }
+        }
 	}
 
 }

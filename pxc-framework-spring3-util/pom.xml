@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>pxc-framework-spring3-util</artifactId>
-    <description>pxc framework spring3 util 工具类模块</description>
+    <description>[1.0.0-SNAPSHOT]pxc framework spring3 util 工具类模块</description>
 
     <dependencies>
         <dependency>
@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-core</artifactId>
+            <artifactId>swagger-core-jakarta</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>

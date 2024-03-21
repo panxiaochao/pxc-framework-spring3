@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import java.util.function.Function;
 
 /**
  * <p>
- * Map工具类.
+ * Map工具类
  * </p>
  *
  * @author Lypxc
@@ -267,5 +267,43 @@ public class MapUtil {
 			}
 		}
 	}
+
+    /**
+     * 按照值排序，可选是否倒序
+     *
+     * @param map    需要对值排序的map
+     * @param <K>    键类型
+     * @param <V>    值类型
+     * @param isDesc 是否倒序
+     * @return 排序后新的Map
+     */
+    public static <K, V extends Comparable<? super V>> Map<K, V> comparingByValue(Map<K, V> map, boolean isDesc) {
+        Map<K, V> result = new LinkedHashMap<>();
+        Comparator<Map.Entry<K, V>> entryComparator = Map.Entry.comparingByValue();
+        if (isDesc) {
+            entryComparator = entryComparator.reversed();
+        }
+        map.entrySet().stream().sorted(entryComparator).forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
+        return result;
+    }
+
+    /**
+     * 按照键值排序，可选是否倒序
+     *
+     * @param map    需要对值排序的map
+     * @param <K>    键类型
+     * @param <V>    值类型
+     * @param isDesc 是否倒序
+     * @return 排序后新的Map
+     */
+    public static <K extends Comparable<? super K>, V> Map<K, V> comparingByKey(Map<K, V> map, boolean isDesc) {
+        Map<K, V> result = new LinkedHashMap<>();
+        Comparator<Map.Entry<K, V>> entryComparator = Map.Entry.comparingByKey();
+        if (isDesc) {
+            entryComparator = entryComparator.reversed();
+        }
+        map.entrySet().stream().sorted(entryComparator).forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
+        return result;
+    }
 
 }

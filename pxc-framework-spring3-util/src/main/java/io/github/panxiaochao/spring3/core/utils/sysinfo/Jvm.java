@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package io.github.panxiaochao.spring3.core.utils.sysinfo;
 
 import io.github.panxiaochao.spring3.core.utils.ArithmeticUtil;
 import io.github.panxiaochao.spring3.core.utils.date.DateUtil;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.lang.management.ManagementFactory;
@@ -31,6 +32,7 @@ import java.util.Date;
  * @since 2023-07-07
  */
 @Setter
+@Getter
 public class Jvm {
 
 	/**
@@ -51,7 +53,12 @@ public class Jvm {
 	/**
 	 * JDK版本
 	 */
-	private String version;
+    private String javaVersion;
+
+    /**
+     * JVM版本
+     */
+    private String jvmVersion;
 
 	/**
 	 * JDK路径
@@ -83,14 +90,6 @@ public class Jvm {
 	 */
 	public String getName() {
 		return ManagementFactory.getRuntimeMXBean().getVmName();
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public String getHome() {
-		return home;
 	}
 
 	/**

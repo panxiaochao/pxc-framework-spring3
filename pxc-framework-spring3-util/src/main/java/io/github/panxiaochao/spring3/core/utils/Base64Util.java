@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,13 +37,15 @@ public class Base64Util {
 
 	private static final Base64.Decoder URL_DECODER = Base64.getUrlDecoder();
 
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+
 	/**
 	 * 编码
 	 * @param value 字符串
 	 * @return {@link String}
 	 */
 	public static String encode(String value) {
-		return encode(value, StandardCharsets.UTF_8);
+        return encode(value, DEFAULT_CHARSET);
 	}
 
 	/**
@@ -63,7 +65,7 @@ public class Base64Util {
 	 * @return {@link String}
 	 */
 	public static String encodeUrlSafe(String value) {
-		return encodeUrlSafe(value, StandardCharsets.UTF_8);
+        return encodeUrlSafe(value, DEFAULT_CHARSET);
 	}
 
 	/**
@@ -83,7 +85,7 @@ public class Base64Util {
 	 * @return {@link String}
 	 */
 	public static String decode(String value) {
-		return decode(value, StandardCharsets.UTF_8);
+        return decode(value, DEFAULT_CHARSET);
 	}
 
 	/**
@@ -104,7 +106,7 @@ public class Base64Util {
 	 * @return {@link String}
 	 */
 	public static String decodeUrlSafe(String value) {
-		return decodeUrlSafe(value, StandardCharsets.UTF_8);
+        return decodeUrlSafe(value, DEFAULT_CHARSET);
 	}
 
 	/**
@@ -161,7 +163,6 @@ public class Base64Util {
 	 * Alphabet".
 	 * @param src the encoded byte array
 	 * @return the original byte array
-	 * @since 4.2.4
 	 */
 	public static byte[] decodeUrlSafe(byte[] src) {
 		if (src.length == 0) {
@@ -179,7 +180,7 @@ public class Base64Util {
 		if (src.length == 0) {
 			return "";
 		}
-		return new String(encode(src), StandardCharsets.UTF_8);
+        return new String(encode(src), DEFAULT_CHARSET);
 	}
 
 	/**
@@ -191,7 +192,7 @@ public class Base64Util {
 		if (src.isEmpty()) {
 			return new byte[0];
 		}
-		return decode(src.getBytes(StandardCharsets.UTF_8));
+        return decode(src.getBytes(DEFAULT_CHARSET));
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class Base64Util {
 	 * @return the encoded byte array as a UTF-8 String
 	 */
 	public static String encodeToUrlSafeString(byte[] src) {
-		return new String(encodeUrlSafe(src), StandardCharsets.UTF_8);
+        return new String(encodeUrlSafe(src), DEFAULT_CHARSET);
 	}
 
 	/**
@@ -211,7 +212,7 @@ public class Base64Util {
 	 * @return the original byte array
 	 */
 	public static byte[] decodeFromUrlSafeString(String src) {
-		return decodeUrlSafe(src.getBytes(StandardCharsets.UTF_8));
+        return decodeUrlSafe(src.getBytes(DEFAULT_CHARSET));
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,13 @@ package io.github.panxiaochao.spring3.core.utils.date;
 import java.sql.Timestamp;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * <p>
@@ -32,19 +37,20 @@ import java.util.Date;
 public class DateUtil {
 
 	/**
-	 * 不能被实例化
-	 */
+     * 不能被实例化
+     */
 	private DateUtil() {
 	}
 
 	/**
-	 * 获取SimpleDateFormat实例，避免多线程问题
-	 * @param format format
-	 * @return SimpleDateFormat
-	 */
+     * 获取SimpleDateFormat实例，避免多线程问题
+     *
+     * @param format format
+     * @return SimpleDateFormat
+     */
 	private static SimpleDateFormat getDateFormat(String format) {
 		SimpleDateFormat simpleDateFormat = DateContext.get();
-		if (null == simpleDateFormat) {
+        if (Objects.isNull(simpleDateFormat)) {
 			simpleDateFormat = new SimpleDateFormat(format);
 			DateContext.set(simpleDateFormat);
 		}
@@ -52,51 +58,59 @@ public class DateUtil {
 	}
 
 	/**
-	 * 获取当前时间
-	 * @return Date
-	 */
+     * 获取当前时间
+     *
+     * @return Date
+     */
 	public static Date getDate() {
 		return new Date();
 	}
 
 	/**
-	 * 根据毫秒转换时间
-	 * @param millis 毫秒
-	 * @return Date
-	 */
+     * 根据毫秒转换时间
+     *
+     * @param millis 毫秒
+     * @return Date
+     */
 	public static Date getDate(long millis) {
 		return new Date(millis);
 	}
 
 	/**
-	 * LocalDateTime 转 new Date()
-	 * @param localDateTime localDateTime
-	 * @return Date
-	 */
+     * LocalDateTime 转 new Date()
+     *
+     * @param localDateTime localDateTime
+     * @return Date
+     */
 	public static Date localDateTimeToDate(LocalDateTime localDateTime) {
 		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 		return Date.from(instant);
 	}
 
 	/**
-	 * localDate 转 new Date()
-	 * @param localDate localDate
-	 * @return Date
-	 */
+     * localDate 转 new Date()
+     *
+     * @param localDate localDate
+     * @return Date
+     */
 	public static Date localDateToDate(LocalDate localDate) {
 		Instant instant = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
 		return Date.from(instant);
 	}
 
 	/**
-	 * LocalTime 转 new Date()
-	 * @param localTime localTime
-	 * @return Date
-	 */
-	public static Date localTimeToDate(LocalTime localTime) {
-		LocalDate localDate = LocalDate.now();
-		ZoneId zone = ZoneId.systemDefault();
-		Instant instant = LocalDateTime.of(localDate, localTime).atZone(zone).toInstant();
+     * LocalTime 转 new Date()
+     *
+     * @param localTime localTime
+     * @return Date
+     */
+    public static Date localTimeToDate(LocalTime localTime) {
+        // @formatter:off
+		Instant instant = LocalDateTime
+				.of(LocalDate.now(), localTime)
+				.atZone(ZoneId.systemDefault())
+				.toInstant();
+		// @formatter:on
 		return Date.from(instant);
 	}
 

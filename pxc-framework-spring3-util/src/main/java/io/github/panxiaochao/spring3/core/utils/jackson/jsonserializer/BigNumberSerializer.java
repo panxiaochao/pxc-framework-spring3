@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.fasterxml.jackson.databind.ser.std.NumberSerializer;
+
 import java.io.IOException;
 
 /**
  * <p>
- * 大精度转换String, 根据前端 JS Number.MAX_SAFE_INTEGER 与 Number.MIN_SAFE_INTEGER 百度得来.
+ * 大精度转换String, 根据前端 JS Number.MAX_SAFE_INTEGER 与 Number.MIN_SAFE_INTEGER 百度得来
  * </p>
  *
  * @author Lypxc

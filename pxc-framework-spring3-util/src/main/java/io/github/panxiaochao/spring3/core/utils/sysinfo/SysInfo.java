@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package io.github.panxiaochao.spring3.core.utils.sysinfo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * <p>
@@ -28,6 +29,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
+@ToString
 public class SysInfo {
 
 	/**
@@ -46,9 +48,14 @@ public class SysInfo {
 	private String dns;
 
 	/**
-	 * 默认网关
+     * IPV4网关
 	 */
-	private String gateway;
+    private String ipv4Gateway;
+
+    /**
+     * IPV6网关
+     */
+    private String ipv6Gateway;
 
 	/**
 	 * 项目路径

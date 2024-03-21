@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +89,20 @@ public class RPage<T> {
 		return new RPage<>(CommonResponseEnum.OK.getCode(), CommonResponseEnum.OK.getMessage(),
 				new PageResponse<>(pagination, data));
 	}
+
+    /**
+     * 成功
+     *
+     * @param code       响应码
+     * @param message    自定义消息
+     * @param pagination 分页
+     * @param data       数据
+     * @param <T>        数据类型
+     * @return 成功的响应
+     */
+    public static <T> RPage<T> ok(int code, String message, Pagination pagination, List<T> data) {
+        return new RPage<>(code, message, new PageResponse<>(pagination, data));
+    }
 
 	/**
 	 * 失败

@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>pxc-framework-spring3-repeatsubmit</artifactId>
-    <description>pxc framework spring3 repeatsubmit 幂等重复提交模块</description>
+    <description>[1.0.0-SNAPSHOT]pxc framework spring3 repeatsubmit 幂等重复提交模块</description>
 
     <dependencies>
         <!-- Redis 模块 -->

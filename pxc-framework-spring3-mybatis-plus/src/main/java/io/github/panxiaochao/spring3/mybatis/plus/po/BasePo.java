@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,18 +46,18 @@ public abstract class BasePo implements Serializable {
 	private LocalDateTime createTime;
 
 	/**
-	 * 创建人
-	 */
-	// @Schema(description = "创建人")
-	// @TableField(value = "CREATE_ID", fill = FieldFill.INSERT)
-	// private Long createId;
-
-	/**
 	 * 更新时间
 	 */
 	@Schema(description = "更新时间")
 	@TableField(value = "UPDATE_TIME", fill = FieldFill.INSERT_UPDATE)
 	private LocalDateTime updateTime;
+
+    /**
+     * 创建人
+     */
+    // @Schema(description = "创建人")
+    // @TableField(value = "CREATE_ID", fill = FieldFill.INSERT)
+    // private Long createId;
 
 	/**
 	 * 更新人

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package io.github.panxiaochao.spring3.core.utils.sysinfo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * <p>
@@ -28,6 +29,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 public class DiskInfo {
 
 	/**
@@ -48,17 +50,17 @@ public class DiskInfo {
 	/**
 	 * 总大小
 	 */
-	private String total;
+    private double total;
 
 	/**
 	 * 剩余大小
 	 */
-	private String free;
+    private double free;
 
 	/**
 	 * 已经使用量
 	 */
-	private String used;
+    private double used;
 
 	/**
 	 * 资源的使用率

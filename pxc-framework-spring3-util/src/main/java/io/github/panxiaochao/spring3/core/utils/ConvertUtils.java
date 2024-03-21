@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -35,10 +35,10 @@ public class ConvertUtils {
 	private static final String NULL_STR = "null";
 
 	public static final Set<String> TRUE_SET = Collections
-		.unmodifiableSet(new LinkedHashSet<>(Arrays.asList("y", "yes", "on", "true", "t")));
+            .unmodifiableSet(new HashSet<>(Arrays.asList("y", "yes", "on", "true", "t")));
 
 	public static final Set<String> FALSE_SET = Collections
-		.unmodifiableSet(new LinkedHashSet<>(Arrays.asList("n", "no", "off", "false", "f")));
+            .unmodifiableSet(new HashSet<>(Arrays.asList("n", "no", "off", "false", "f")));
 
 	/**
 	 * Convert String value to int value if parameter value is legal. And it automatically
@@ -174,18 +174,18 @@ public class ConvertUtils {
 	 * However, this method accepts 'on' and 'yes', 't', 'y' as true values.
 	 *
 	 * <pre>
-	 *   BooleanUtils.toBoolean(null)    = false
-	 *   BooleanUtils.toBoolean("true")  = true
-	 *   BooleanUtils.toBoolean("TRUE")  = true
-	 *   BooleanUtils.toBoolean("tRUe")  = true
-	 *   BooleanUtils.toBoolean("on")    = true
-	 *   BooleanUtils.toBoolean("yes")   = true
-	 *   BooleanUtils.toBoolean("false") = false
-	 *   BooleanUtils.toBoolean("x gti") = false
-	 *   BooleanUtils.toBooleanObject("y") = true
-	 *   BooleanUtils.toBooleanObject("n") = false
-	 *   BooleanUtils.toBooleanObject("t") = true
-	 *   BooleanUtils.toBooleanObject("f") = false
+     *   ConvertUtils.toBoolean(null)    = false
+     *   ConvertUtils.toBoolean("true")  = true
+     *   ConvertUtils.toBoolean("TRUE")  = true
+     *   ConvertUtils.toBoolean("tRUe")  = true
+     *   ConvertUtils.toBoolean("on")    = true
+     *   ConvertUtils.toBoolean("yes")   = true
+     *   ConvertUtils.toBoolean("false") = false
+     *   ConvertUtils.toBoolean("x gti") = false
+     *   ConvertUtils.toBooleanObject("y") = true
+     *   ConvertUtils.toBooleanObject("n") = false
+     *   ConvertUtils.toBooleanObject("t") = true
+     *   ConvertUtils.toBooleanObject("f") = false
 	 * </pre>
 	 * @param str the String to check
 	 * @return the boolean value of the string, {@code false} if no match or the String is
@@ -215,22 +215,22 @@ public class ConvertUtils {
 	 *
 	 * <pre>
 	 *   // N.B. case is not significant
-	 *   BooleanUtils.toBooleanObject(null)    = null
-	 *   BooleanUtils.toBooleanObject("true")  = Boolean.TRUE
-	 *   BooleanUtils.toBooleanObject("T")     = Boolean.TRUE // i.e. T[RUE]
-	 *   BooleanUtils.toBooleanObject("false") = Boolean.FALSE
-	 *   BooleanUtils.toBooleanObject("f")     = Boolean.FALSE // i.e. f[alse]
-	 *   BooleanUtils.toBooleanObject("No")    = Boolean.FALSE
-	 *   BooleanUtils.toBooleanObject("n")     = Boolean.FALSE // i.e. n[o]
-	 *   BooleanUtils.toBooleanObject("on")    = Boolean.TRUE
-	 *   BooleanUtils.toBooleanObject("ON")    = Boolean.TRUE
-	 *   BooleanUtils.toBooleanObject("off")   = Boolean.FALSE
-	 *   BooleanUtils.toBooleanObject("oFf")   = Boolean.FALSE
-	 *   BooleanUtils.toBooleanObject("yes")   = Boolean.TRUE
-	 *   BooleanUtils.toBooleanObject("Y")     = Boolean.TRUE // i.e. Y[ES]
-	 *   BooleanUtils.toBooleanObject("blue")  = null
-	 *   BooleanUtils.toBooleanObject("true ") = null // trailing space (too long)
-	 *   BooleanUtils.toBooleanObject("ono")   = null // does not match on or no
+     *   ConvertUtils.toBooleanObject(null)    = null
+     *   ConvertUtils.toBooleanObject("true")  = Boolean.TRUE
+     *   ConvertUtils.toBooleanObject("T")     = Boolean.TRUE // i.e. T[RUE]
+     *   ConvertUtils.toBooleanObject("false") = Boolean.FALSE
+     *   ConvertUtils.toBooleanObject("f")     = Boolean.FALSE // i.e. f[alse]
+     *   ConvertUtils.toBooleanObject("No")    = Boolean.FALSE
+     *   ConvertUtils.toBooleanObject("n")     = Boolean.FALSE // i.e. n[o]
+     *   ConvertUtils.toBooleanObject("on")    = Boolean.TRUE
+     *   ConvertUtils.toBooleanObject("ON")    = Boolean.TRUE
+     *   ConvertUtils.toBooleanObject("off")   = Boolean.FALSE
+     *   ConvertUtils.toBooleanObject("oFf")   = Boolean.FALSE
+     *   ConvertUtils.toBooleanObject("yes")   = Boolean.TRUE
+     *   ConvertUtils.toBooleanObject("Y")     = Boolean.TRUE // i.e. Y[ES]
+     *   ConvertUtils.toBooleanObject("blue")  = null
+     *   ConvertUtils.toBooleanObject("true ") = null // trailing space (too long)
+     *   ConvertUtils.toBooleanObject("ono")   = null // does not match on or no
 	 * </pre>
 	 * @param str the String to check; upper and lower case are treated as the same
 	 * @return the Boolean value of the string, {@code null} if no match or {@code null}

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,33 @@
  */
 package io.github.panxiaochao.spring3.core.utils;
 
-import io.github.panxiaochao.spring3.core.utils.sysinfo.*;
+import io.github.panxiaochao.spring3.core.utils.sysinfo.Cpu;
+import io.github.panxiaochao.spring3.core.utils.sysinfo.DiskInfo;
+import io.github.panxiaochao.spring3.core.utils.sysinfo.Jvm;
+import io.github.panxiaochao.spring3.core.utils.sysinfo.Mem;
+import io.github.panxiaochao.spring3.core.utils.sysinfo.ServerInfo;
+import io.github.panxiaochao.spring3.core.utils.sysinfo.SysInfo;
+import io.github.panxiaochao.spring3.core.utils.unit.DataOfSize;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.NetworkIF;
 import oshi.software.os.FileSystem;
 import oshi.software.os.NetworkParams;
 import oshi.software.os.OSFileStore;
 import oshi.software.os.OperatingSystem;
+import oshi.util.GlobalConfig;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -48,7 +61,23 @@ public class SystemServerUtil {
 	/**
 	 * SystemInfo 初始化
 	 */
-	private final SystemInfo systemInfo = new SystemInfo();
+    private static final SystemInfo systemInfo;
+
+    /**
+     * 硬件信息
+     */
+    private static final HardwareAbstractionLayer hal;
+
+    /**
+     * 系统信息
+     */
+    private static final OperatingSystem os;
+
+    static {
+        systemInfo = new SystemInfo();
+        hal = systemInfo.getHardware();
+        os = systemInfo.getOperatingSystem();
+    }
 
 	private SystemServerUtil() {
 	}
@@ -70,7 +99,8 @@ public class SystemServerUtil {
 		serverInfo.setMem(ofMemInfo());
 		serverInfo.setJvm(ofJvmInfo());
 		serverInfo.setSys(ofSysInfo());
-		serverInfo.setDiskInfos(ofDiskInfosInfo());
+        serverInfo.setDiskInfo(ofDiskInfo());
+        serverInfo.setDiskInfos(ofDiskInfos());
 		return serverInfo;
 	}
 
@@ -79,7 +109,8 @@ public class SystemServerUtil {
 	 * @return Cpu
 	 */
 	public Cpu ofCpuInfo() {
-		HardwareAbstractionLayer hal = systemInfo.getHardware();
+        // Oshi 返回的值和Windows任务管理器显示的值一致
+        GlobalConfig.set(GlobalConfig.OSHI_OS_WINDOWS_CPU_UTILITY, true);
 		CentralProcessor processor = hal.getProcessor();
 		// CPU信息
 		long[] prevTicks = processor.getSystemCpuLoadTicks();
@@ -107,11 +138,18 @@ public class SystemServerUtil {
 		long steal = ticks[CentralProcessor.TickType.STEAL.getIndex()]
 				- prevTicks[CentralProcessor.TickType.STEAL.getIndex()];
 		long totalCpu = user + nice + cSys + idle + ioWait + irq + softIrq + steal;
+        // 能效核心数
+        long efficiencyCount = processor.getPhysicalProcessors().stream().filter(s -> s.getEfficiency() == 1).count();
 		Cpu cpu = new Cpu();
-		cpu.setCpuNum(processor.getLogicalProcessorCount());
+        cpu.setCpuName(processor.getProcessorIdentifier().getName());
+        cpu.setPhysicalPackageCount(processor.getPhysicalPackageCount());
+        cpu.setPhysicalProcessorCount(processor.getPhysicalProcessorCount());
+        cpu.setEfficiencyCount((int) efficiencyCount);
+        cpu.setLogicalProcessorCount(processor.getLogicalProcessorCount());
+        cpu.setVendor(processor.getProcessorIdentifier().getVendor());
 		cpu.setTotal(totalCpu);
 		cpu.setSys(cSys);
-		cpu.setUsed(user);
+        cpu.setUser(user);
 		cpu.setWait(ioWait);
 		cpu.setFree(idle);
 		return cpu;
@@ -122,7 +160,7 @@ public class SystemServerUtil {
 	 * @return Mem
 	 */
 	public Mem ofMemInfo() {
-		GlobalMemory memory = systemInfo.getHardware().getMemory();
+        GlobalMemory memory = hal.getMemory();
 		memory.getVirtualMemory();
 		// 内存信息
 		Mem mem = new Mem();
@@ -142,8 +180,9 @@ public class SystemServerUtil {
 		jvm.setTotal(Runtime.getRuntime().totalMemory());
 		jvm.setMax(Runtime.getRuntime().maxMemory());
 		jvm.setFree(Runtime.getRuntime().freeMemory());
-		jvm.setVersion(props.getProperty("java.version"));
+        jvm.setJavaVersion(props.getProperty("java.version"));
 		jvm.setHome(props.getProperty("java.home"));
+        jvm.setJvmVersion(props.getProperty("java.vm.version"));
 		return jvm;
 	}
 
@@ -152,27 +191,32 @@ public class SystemServerUtil {
 	 * @return SysInfo
 	 */
 	public SysInfo ofSysInfo() {
-		OperatingSystem operatingSystem = systemInfo.getOperatingSystem();
-		NetworkParams networkParams = operatingSystem.getNetworkParams();
+        NetworkParams networkParams = os.getNetworkParams();
+        List<NetworkIF> networkIFs = hal.getNetworkIFs();
+        List<String> ipv4s = networkIFs.stream()
+                .map(NetworkIF::getIPv4addr)
+                .filter(ArrayUtil::isNotEmpty)
+                .map(s -> String.join(StringPools.COMMA, s))
+                .collect(Collectors.toList());
 		SysInfo sys = new SysInfo();
 		Properties props = System.getProperties();
 		sys.setComputerName(networkParams.getHostName());
-		sys.setComputerIp(IpUtil.getHostIp());
+        sys.setComputerIp(String.join(StringPools.COMMA, ipv4s));
 		sys.setDns(Arrays.toString(networkParams.getDnsServers()));
-		sys.setGateway(networkParams.getIpv4DefaultGateway());
-		sys.setOsName(props.getProperty("os.name"));
+        sys.setIpv4Gateway(networkParams.getIpv4DefaultGateway());
+        sys.setIpv6Gateway(networkParams.getIpv6DefaultGateway());
+        sys.setOsName(props.getProperty("os.name") + " " + props.getProperty("os.version"));
 		sys.setOsArch(props.getProperty("os.arch"));
 		sys.setUserDir(props.getProperty("user.dir"));
 		return sys;
-	}
+    }
 
-	/**
-	 * 获取文件存储信息
+    /**
+     * 获取磁盘文件存储信息
 	 * @return DiskInfo
-	 */
-	public List<DiskInfo> ofDiskInfosInfo() {
-		OperatingSystem operatingSystem = systemInfo.getOperatingSystem();
-		FileSystem fileSystem = operatingSystem.getFileSystem();
+     */
+    public List<DiskInfo> ofDiskInfos() {
+        FileSystem fileSystem = os.getFileSystem();
 		List<OSFileStore> fsArray = fileSystem.getFileStores();
 		List<DiskInfo> diskInfos = new ArrayList<>();
 		for (OSFileStore fs : fsArray) {
@@ -183,13 +227,71 @@ public class SystemServerUtil {
 			diskInfo.setDirName(fs.getMount());
 			diskInfo.setSysTypeName(fs.getType());
 			diskInfo.setTypeName(fs.getName());
-			diskInfo.setTotal(convertFileSize(total));
-			diskInfo.setFree(convertFileSize(free));
-			diskInfo.setUsed(convertFileSize(used));
+            diskInfo.setTotal(DataOfSize.ofBytes(total).toGigabytes());
+            diskInfo.setFree(DataOfSize.ofBytes(free).toGigabytes());
+            diskInfo.setUsed(DataOfSize.ofBytes(used).toGigabytes());
 			diskInfo.setUsage(ArithmeticUtil.mul(ArithmeticUtil.div(used, total, 4), 100));
 			diskInfos.add(diskInfo);
 		}
 		return diskInfos;
+    }
+
+    /**
+     * 磁盘总体存储详情
+     *
+     * @return DiskInfo
+     */
+    public DiskInfo ofDiskInfo() {
+        // 获取磁盘总体详情
+        AtomicLong storageTotal = new AtomicLong(0);
+        AtomicLong storageUsed = new AtomicLong(0);
+        AtomicLong storageFree = new AtomicLong(0);
+        File[] files = File.listRoots();
+        for (File file : files) {
+            long totalSpace = file.getTotalSpace();
+            long usableSpace = file.getUsableSpace();
+            long freeSpace = file.getFreeSpace();
+            storageTotal.addAndGet(DataOfSize.ofBytes(totalSpace).toGigabytes());
+            storageUsed.addAndGet(DataOfSize.ofBytes(usableSpace).toGigabytes());
+            storageFree.addAndGet(DataOfSize.ofBytes(freeSpace).toGigabytes());
+        }
+        DiskInfo diskInfo = new DiskInfo();
+        diskInfo.setTotal(storageTotal.get());
+        diskInfo.setFree(storageFree.get());
+        diskInfo.setUsed(storageUsed.get());
+        diskInfo.setUsage(ArithmeticUtil.mul(ArithmeticUtil.div(diskInfo.getUsed(), diskInfo.getTotal(), 4), 100));
+        return diskInfo;
+    }
+
+    /**
+     * 获取网络上传下载 单位Kb/s
+     *
+     * @return 上传速度和下载速度
+     */
+    public Map<String, Object> ofNetworkInterfaces() {
+        Map<String, Object> networkInterfaces = new HashMap<>();
+        List<NetworkIF> networkIFs = hal.getNetworkIFs();
+        for (NetworkIF networkIF : networkIFs) {
+            if (ArrayUtil.isNotEmpty(networkIF.getIPv4addr())) {
+                long rxBytes = networkIF.getBytesRecv();
+                long txBytes = networkIF.getBytesSent();
+                try {
+                    Thread.sleep(3000);
+                } catch (Exception e) {
+                    // Ignore
+                }
+                networkIF.updateAttributes();
+                long rxBytes1 = networkIF.getBytesRecv();
+                long txBytes1 = networkIF.getBytesSent();
+                long rxSpeed = DataOfSize.ofBytes(rxBytes1 - rxBytes).toKilobytes();
+                long txSpeed = DataOfSize.ofBytes(txBytes1 - txBytes).toKilobytes();
+
+                networkInterfaces.put("displayName", networkIF.getDisplayName());
+                networkInterfaces.put("download", rxSpeed);
+                networkInterfaces.put("up", txSpeed);
+            }
+        }
+        return networkInterfaces;
 	}
 
 	/**
@@ -213,17 +315,18 @@ public class SystemServerUtil {
 			return String.format(f > 100 ? "%.0f KB" : "%.1f KB", f);
 		}
 		else {
-			return String.format("%d B", size);
-		}
-	}
+            return String.format("%d B", size);
+        }
+    }
 
-	// public static void main(String[] args) {
-	// Properties props = System.getProperties();
-	// //遍历所有的属性
-	// for (String key : props.stringPropertyNames()) {
-	// //输出对应的键和值
-	// System.out.println(key + " = " + props.getProperty(key));
-	// }
-	// }
+    public static void main(String[] args) {
+        // System.out.println(SystemServerUtil.INSTANCE().ofSysInfo());
+        // Properties props = System.getProperties();
+        // // 遍历所有的属性
+        // for (String key : props.stringPropertyNames()) {
+        // // 输出对应的键和值
+        // System.out.println(key + " = " + props.getProperty(key));
+		// }
+	}
 
 }

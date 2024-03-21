@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023-2024 Lypxc (545685602@qq.com)
+ * Copyright © 2024-2025 Lypxc(潘) (545685602@qq.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,12 @@ public class ServerInfo {
 	private SysInfo sys = new SysInfo();
 
 	/**
-	 * 磁盘 相关信息
+     * 磁盘存储 相关信息
+     */
+    private DiskInfo diskInfo = new DiskInfo();
+
+    /**
+     * 磁盘文件 相关信息
 	 */
 	private List<DiskInfo> diskInfos = new LinkedList<>();
 

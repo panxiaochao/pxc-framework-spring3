@@ -8,7 +8,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>pxc framework spring3 依赖项管理</description>
+    <description>[1.0.0-SNAPSHOT]pxc framework spring3 依赖项管理</description>
 
     <url>https://github.com/panxiaochao/pxc-framework-spring3</url>
 
@@ -62,18 +62,24 @@
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
         <maven-compiler-plugin.verison>3.11.0</maven-compiler-plugin.verison>
         <maven-source-plugin.verison>3.3.0</maven-source-plugin.verison>
-        <maven-javadoc-plugin.verison>3.5.0</maven-javadoc-plugin.verison>
-        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
-        <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
-        <spring-javaformat-maven-plugin.version>0.0.39</spring-javaformat-maven-plugin.version>
+        <maven-javadoc-plugin.verison>3.6.3</maven-javadoc-plugin.verison>
+        <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
+        <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- 核心模块 -->
+            <!-- 核心 模块 -->
             <dependency>
                 <groupId>io.github.panxiaochao</groupId>
                 <artifactId>pxc-framework-spring3-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- Email 模块 -->
+            <dependency>
+                <groupId>io.github.panxiaochao</groupId>
+                <artifactId>pxc-framework-spring3-email</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- 工具类 模块 -->
@@ -106,10 +112,22 @@
                 <artifactId>pxc-framework-spring3-repeatsubmit</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <!-- 脱敏加密 模块 -->
+            <dependency>
+                <groupId>io.github.panxiaochao</groupId>
+                <artifactId>pxc-framework-spring3-sensitive</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!-- 操作日志 模块 -->
             <dependency>
                 <groupId>io.github.panxiaochao</groupId>
                 <artifactId>pxc-framework-spring3-operate-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 二维码  模块 -->
+            <dependency>
+                <groupId>io.github.panxiaochao</groupId>
+                <artifactId>pxc-framework-spring3-qrcode</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- 日志追踪链路 模块 -->
@@ -122,6 +140,12 @@
             <dependency>
                 <groupId>io.github.panxiaochao</groupId>
                 <artifactId>pxc-framework-spring3-mybatis-plus</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 代码构建 模块 -->
+            <dependency>
+                <groupId>io.github.panxiaochao</groupId>
+                <artifactId>pxc-framework-spring3-mybatis-plus-generator</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- Mvc Web 模块 -->
